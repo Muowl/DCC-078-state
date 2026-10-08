@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Diagrama de Classes UML — State</title>
+  <style>
+    * { box-sizing: border-box; }
+    body { margin: 0; background: #fff; }
+    svg { display: block; width: 1104px; height: 524px; }
+    .nome { font: 600 12px 'Segoe UI', sans-serif; fill: #2d3142; text-anchor: middle; }
+    .membro { font: 9px Consolas, monospace; fill: #2d3142; }
+    .rotulo { font: 9px Consolas, monospace; fill: #4f5d75; text-anchor: middle; }
+    .caixa { fill: #fff; stroke: #2d3142; stroke-width: 1.4; }
+    .cabecalho { fill: #f1f3f5; }
+    .divisoria { stroke: #2d3142; stroke-width: 1.2; }
+    .conector { fill: none; stroke: #2d3142; stroke-width: 1.4; }
+    .realizacao { stroke-dasharray: 5 4; marker-end: url(#state-triangulo); }
+  </style>
+</head>
+<body>
+<svg viewBox="0 0 1104 524" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="state-title state-desc">
+  <title id="state-title">Diagrama de Classes UML do padrão State</title>
+  <desc id="state-desc">Chamado mantém um EstadoChamado e delega suas operações a EstadoAberto, EstadoEmAtendimento, EstadoResolvido ou EstadoCancelado; os estados recebem o chamado para realizar transições.</desc>
+  <defs>
+    <marker id="state-triangulo" markerWidth="14" markerHeight="12" refX="13" refY="6" orient="auto" markerUnits="userSpaceOnUse">
+      <polygon points="1 1,13 6,1 11" fill="#fff" stroke="#2d3142" stroke-width="1.4"/>
+    </marker>
+    <marker id="state-aberta" markerWidth="12" markerHeight="10" refX="11" refY="5" orient="auto" markerUnits="userSpaceOnUse">
+      <polyline points="2 1,10 5,2 9" fill="none" stroke="#2d3142" stroke-width="1.4"/>
+    </marker>
+  </defs>
+  <rect width="1104" height="524" fill="#fff"/>
+
+  <!-- Associação navegável: Chamado mantém exatamente um estado atual. -->
+  <path class="conector" d="M368 88 H480" marker-end="url(#state-aberta)"/>
+  <rect x="400" y="64" width="48" height="16" fill="#fff"/>
+  <text class="rotulo" x="424" y="76">estado</text>
+  <rect x="374" y="96" width="32" height="16" fill="#fff"/>
+  <text class="rotulo" x="390" y="108">0..1</text>
+  <rect x="456" y="96" width="16" height="16" fill="#fff"/>
+  <text class="rotulo" x="464" y="108">1</text>
+
+  <!-- Dependência: as operações da interface recebem o contexto Chamado. -->
+  <path class="conector" d="M480 164 H368" stroke-dasharray="4 3" marker-end="url(#state-aberta)"/>
+  <rect x="396" y="140" width="56" height="16" fill="#fff"/>
+  <text class="rotulo" x="424" y="152">chamado</text>
+
+  <!-- Realizações independentes, sem barramento compartilhado. -->
+  <path class="conector realizacao" d="M144 352 V280 Q144 272 152 272 H520 Q528 272 528 264 V224"/>
+  <path class="conector realizacao" d="M416 352 V304 Q416 296 424 296 H600 Q608 296 608 288 V224"/>
+  <path class="conector realizacao" d="M688 352 V224"/>
+  <path class="conector realizacao" d="M960 352 V280 Q960 272 952 272 H776 Q768 272 768 264 V224"/>
+
+  <g id="state-chamado">
+    <rect x="16" y="16" width="352" height="224" rx="6" fill="#fff" stroke="#d9532f" stroke-width="1.6"/>
+    <path d="M22 16 H362 Q368 16 368 22 V52 H16 V22 Q16 16 22 16" fill="#fbece6"/>
+    <line x1="16" y1="52" x2="368" y2="52" stroke="#d9532f" stroke-width="1.2"/>
+    <text class="nome" x="192" y="40">Chamado</text>
+    <text class="membro" x="32" y="76">- estado: EstadoChamado</text>
+    <line x1="16" y1="92" x2="368" y2="92" stroke="#d9532f" stroke-width="1.2"/>
+    <text class="membro" x="32" y="116">~ alterarEstado(e: EstadoChamado): void</text>
+    <text class="membro" x="32" y="140">+ iniciarAtendimento(): boolean</text>
+    <text class="membro" x="32" y="164">+ resolver(): boolean</text>
+    <text class="membro" x="32" y="188">+ cancelar(): boolean</text>
+    <text class="membro" x="32" y="212">+ reabrir(): boolean</text>
+  </g>
+
+  <g id="state-interface">
+    <rect class="caixa" x="480" y="16" width="368" height="208" rx="6"/>
+    <path class="cabecalho" d="M486 16 H842 Q848 16 848 22 V64 H480 V22 Q480 16 486 16"/>
+    <line class="divisoria" x1="480" y1="64" x2="848" y2="64"/>
+    <text class="rotulo" x="664" y="36">«interface»</text>
+    <text class="nome" x="664" y="52">EstadoChamado</text>
+    <text class="membro" x="496" y="88">+ getNome(): String</text>
+    <text class="membro" x="496" y="112">+ iniciarAtendimento(c: Chamado): boolean</text>
+    <text class="membro" x="496" y="136">+ resolver(c: Chamado): boolean</text>
+    <text class="membro" x="496" y="160">+ cancelar(c: Chamado): boolean</text>
+    <text class="membro" x="496" y="184">+ reabrir(c: Chamado): boolean</text>
+  </g>
+
+  <g id="state-aberto">
+    <rect class="caixa" x="16" y="352" width="256" height="156" rx="6"/>
+    <path class="cabecalho" d="M22 352 H266 Q272 352 272 358 V388 H16 V358 Q16 352 22 352"/>
+    <line class="divisoria" x1="16" y1="388" x2="272" y2="388"/>
+    <text class="nome" x="144" y="376">EstadoAberto</text>
+    <text class="membro" x="28" y="408">+ getNome(): String</text>
+    <text class="membro" x="28" y="428">+ iniciarAtendimento(c: Chamado): boolean</text>
+    <text class="membro" x="28" y="448">+ resolver(c: Chamado): boolean</text>
+    <text class="membro" x="28" y="468">+ cancelar(c: Chamado): boolean</text>
+    <text class="membro" x="28" y="488">+ reabrir(c: Chamado): boolean</text>
+  </g>
+
+  <g id="state-em-atendimento">
+    <rect class="caixa" x="288" y="352" width="256" height="156" rx="6"/>
+    <path class="cabecalho" d="M294 352 H538 Q544 352 544 358 V388 H288 V358 Q288 352 294 352"/>
+    <line class="divisoria" x1="288" y1="388" x2="544" y2="388"/>
+    <text class="nome" x="416" y="376">EstadoEmAtendimento</text>
+    <text class="membro" x="300" y="408">+ getNome(): String</text>
+    <text class="membro" x="300" y="428">+ iniciarAtendimento(c: Chamado): boolean</text>
+    <text class="membro" x="300" y="448">+ resolver(c: Chamado): boolean</text>
+    <text class="membro" x="300" y="468">+ cancelar(c: Chamado): boolean</text>
+    <text class="membro" x="300" y="488">+ reabrir(c: Chamado): boolean</text>
+  </g>
+
+  <g id="state-resolvido">
+    <rect class="caixa" x="560" y="352" width="256" height="156" rx="6"/>
+    <path class="cabecalho" d="M566 352 H810 Q816 352 816 358 V388 H560 V358 Q560 352 566 352"/>
+    <line class="divisoria" x1="560" y1="388" x2="816" y2="388"/>
+    <text class="nome" x="688" y="376">EstadoResolvido</text>
+    <text class="membro" x="572" y="408">+ getNome(): String</text>
+    <text class="membro" x="572" y="428">+ iniciarAtendimento(c: Chamado): boolean</text>
+    <text class="membro" x="572" y="448">+ resolver(c: Chamado): boolean</text>
+    <text class="membro" x="572" y="468">+ cancelar(c: Chamado): boolean</text>
+    <text class="membro" x="572" y="488">+ reabrir(c: Chamado): boolean</text>
+  </g>
+
+  <g id="state-cancelado">
+    <rect class="caixa" x="832" y="352" width="256" height="156" rx="6"/>
+    <path class="cabecalho" d="M838 352 H1082 Q1088 352 1088 358 V388 H832 V358 Q832 352 838 352"/>
+    <line class="divisoria" x1="832" y1="388" x2="1088" y2="388"/>
+    <text class="nome" x="960" y="376">EstadoCancelado</text>
+    <text class="membro" x="844" y="408">+ getNome(): String</text>
+    <text class="membro" x="844" y="428">+ iniciarAtendimento(c: Chamado): boolean</text>
+    <text class="membro" x="844" y="448">+ resolver(c: Chamado): boolean</text>
+    <text class="membro" x="844" y="468">+ cancelar(c: Chamado): boolean</text>
+    <text class="membro" x="844" y="488">+ reabrir(c: Chamado): boolean</text>
+  </g>
+</svg>
+</body>
+</html>
